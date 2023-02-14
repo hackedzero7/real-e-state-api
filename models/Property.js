@@ -90,6 +90,10 @@ const schema = new mongoose.Schema({
       required: true,
     },
   },
+  interustedUsers:[{
+    type: mongoose.Types.ObjectId,
+    ref: 'InterustedUser',
+  }],
   views: {
     type: Number,
     default: 0

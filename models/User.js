@@ -35,6 +35,7 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId,
         ref: 'Property'
       }],
+      
       role: {
         type: String,
         default: "user",

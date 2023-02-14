@@ -9,6 +9,8 @@ const {
   incrementVeiws,
   addToFavraite,
   removeToFavorites,
+  intrustedUser,
+  reciveMessageFromUser,
 } = require("../controllers/propertyController");
 const { isAuthenticated, AutherizedRole } = require("../middleware/auth");
 const router = express.Router();
@@ -18,6 +20,7 @@ router.route("/properties").get(getAllProperties);
 router.route("/property/:id").get(getPropertyDetails);
 router.route("/property/:id/favorites").post(isAuthenticated, addToFavraite)
 .delete(isAuthenticated, removeToFavorites);
+router.route('/property/:id/interusted-user').get(isAuthenticated, reciveMessageFromUser);
 router.route("/property/:id/views").patch(incrementVeiws);
 router.route('/property/update/:id').put(isAuthenticated, AutherizedRole("admin", "user"), updateProperties);
 router.route('/property/delete/:id').delete(isAuthenticated, AutherizedRole("admin","user"), deleteProperty);

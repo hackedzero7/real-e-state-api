@@ -1,3 +1,4 @@
+const InterustedUser = require("../models/InterustedUser");
 const Property = require("../models/Property");
 const User = require("../models/User");
 const ApiFeatures = require("../utils/apifeatures");
@@ -309,3 +310,83 @@ exports.removeToFavorites = async (req, res) => {
         })
     }
 }
+
+/**Intrusted Users */
+// exports.reciveMessageFromUser = async (req, res) => {
+//   try {
+//     let intrusteduser = await InterustedUser.find();
+//     if(!intrusteduser){
+//       return res.status(400).json({
+//         success: false,
+//         message:`Intrusted user not found with this id:${req.params.id}`
+//       })
+//     }
+//     res.status(200).json({
+//       success:true,
+//       intrusteduser
+//     })
+
+//   } catch (error) {
+//       res.status(500).json({
+//           success: false,
+//           message: error.message
+//       })
+//   }
+// }
+
+  // if(property.ownerId.toString() !== req.user._id.toString()){
+      //     return res.status(401).json({
+      //         success: false,
+      //         message: 'Unautherize'
+      //     })
+      // }
+
+      
+      
+      // const users = await User.find({ _id: { $in: property.interustedUser } });
+
+      // const userContacts = users.map((user) => {
+      //   return {
+      //     name: user.name,
+      //     email: user.email,
+      //     phone: user.phone,
+      //     message: user.message
+      //   };
+      // });
+
+      // res.status(200).json({
+      //     success: true,
+      //     // userContacts
+      // })
+
+
+      exports.reciveMessageFromUser = async (req, res) => {
+        try {
+          const property = await Property.findById(req.params.id).populate({
+            path: 'interustedUsers',
+            options: { strict: false }
+          });
+          if(!property){
+            return res.status(400).json({
+              success: false,
+              message: `Property not found with id: ${req.params.id}`
+            });
+          }
+          if(property.ownerId.toString() !== req.user._id.toString()){
+            return res.status(401).json({
+              success: false,
+              message: 'Unauthorized'
+            });
+          }
+          res.status(200).json({
+            success: true,
+            interustedUsers: property.interustedUsers
+          });
+        } catch (error) {
+          res.status(500).json({
+            success: false,
+            message: error.message
+          });
+        }
+      };
+      

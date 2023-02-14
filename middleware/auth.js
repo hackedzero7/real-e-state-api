@@ -4,21 +4,27 @@ exports.isAuthenticated = async (req, res, next) => {
   try {
     const { token } = req.cookies;
     if (!token) {
-      return res.status(400).json({
+      req.user = null;
+      return next();
+    }
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await User.findById(decoded._id);
+    if (!user) {
+      return res.status(404).json({
         success: false,
-        message: "Please First Login",
+        message: "User not found",
       });
     }
-    const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-    req.user = await User.findById(decoded._id);
-    next();
+    req.user = user;
+    return next();
   } catch (error) {
-    res.status(500).json({
+    return res.status(401).json({
       success: false,
-      message: error.message,
+      message: "Unauthorized: missing or invalid token",
     });
   }
 };
+
 
 exports.AutherizedRole = (...roles) => {
   return (req, res, next) => {
