@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended : true }))
 app.use(cookieParser());
 
 app.use(cors({
-    origin: 'http://localhost:3000' // The URL of your frontend
+    origin: 'https://plum-friendly-jellyfish.cyclic.app' // The URL of your frontend
   }));
 
 /**routers */
