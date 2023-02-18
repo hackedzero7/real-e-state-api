@@ -20,9 +20,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended : true }))
 app.use(cookieParser());
 
-app.use(cors({
-    origin: 'https://plum-friendly-jellyfish.cyclic.app' // The URL of your frontend
-  }));
+const corsOptions = {
+  origin: 'https://phenomenal-croissant-d2cb0e.netlify.app',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}
+
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
 
 /**routers */
 app.use('/api/v1', userRoute);
