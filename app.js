@@ -20,14 +20,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended : true }))
 app.use(cookieParser());
 
-const corsOptions = {
-  origin: 'https://phenomenal-croissant-d2cb0e.netlify.app',
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
-}
-
-app.options('*', cors(corsOptions));
-app.use(cors(corsOptions));
+app.use(cors({
+    origin: 'http://localhost:3000',
+    
+  }));
 
 /**routers */
 app.use('/api/v1', userRoute);
